@@ -1,0 +1,23 @@
+{
+  "name": "chatapp",
+  "version": "1.0.0",
+  "description": "Basic Chat App for Assignment 3 of SENG 513",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nodnarb3/BasicChatApp.git"
+  },
+  "author": "Brandon Slack",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nodnarb3/BasicChatApp/issues"
+  },
+  "homepage": "https://github.com/Nodnarb3/BasicChatApp#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
