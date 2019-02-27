@@ -18,7 +18,7 @@
 <div class="container-fluid h-100">
 	<div class="row top-area pt-2 pb-1">
 		<div class="col-9">
-			<h2>You are Bob</h2>
+			<h2>You are <span class="your-nick"></span></h2>
 		</div>
 		<div class="col-3">
 			<h2 class="no-wrap">Online Users:</h2>
@@ -37,7 +37,7 @@
 		</div>
 		<div class="col-3 user-frame">
 			<div class="user-area">
-				<div class="scroller">
+				<div id="user-list" class="scroller">
 					
 				</div>
 			</div>
@@ -47,9 +47,9 @@
 		<div class="col">
 			<div class="input-group">
 				<div class="input-group-prepend">
-					<span class="input-group-text">{Nickname}:</span>
+					<span class="input-group-text your-nick"></span>
 				</div>
-				<input id="msg-input" type="text" class="form-control"/>
+				<input id="msg-input" type="text" autocomplete="off" class="form-control"/>
 				<div class="input-group-append">
 					<button id="send-btn" type="button" class="btn btn-primary">Send</button>
 				</div>
@@ -61,6 +61,8 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 	<script src="client.js"></script>
 </body>
 </html>

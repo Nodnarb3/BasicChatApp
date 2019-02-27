@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/Nodnarb3/BasicChatApp#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "cookies": "^0.7.3",
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0",
+    "uuid": "^3.3.2"
   }
 }
