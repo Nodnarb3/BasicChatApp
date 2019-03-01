@@ -8,6 +8,9 @@
 	socket.on("message", (data) => {appendMessage(data);});
 	socket.on("message-history", (data) => {chatHistory(data);});
 	socket.on("update-nick", (data) => {setToken(data);});
+	socket.on("nickname-change", (data) => {updateNickname(data);});
+	socket.on("update-color", (data) => {updateColor(data);});
+	socket.on("color-change", (data) => {colorChange(data);});
 	
 	
 	$('#msg-input').on("keypress", (event)=>{
@@ -24,8 +27,11 @@
 	function sendMsg()
 	{
 		let msg = $('#msg-input').val();
-		socket.emit("message", msg);
-		$('#msg-input').val(null);
+		if(msg.length > 0)
+		{
+			socket.emit("message", msg);
+			$('#msg-input').val(null);
+		}
 	}
 	
 	function connected()
@@ -44,7 +50,10 @@
 		console.log("Token: " + data);
 		Cookies.set("token", data, {expires: 1});
 		
-		$(".your-nick").html(JSON.parse(Cookies.get("token")).nick);
+		let u = JSON.parse(Cookies.get("token"));
+		
+		$(".your-nick").html(u.nick);
+		$(".your-nick.your-color").css('background-color', u.color+"4f");
 		
 	}
 	
@@ -82,6 +91,25 @@
 		$("#message-list").animate({scrollTop: $("#message-list")[0].scrollHeight}, 1);
 		
 		
+	}
+	
+	function updateNickname(data)
+	{
+		let user = JSON.parse(data);
+		$("#user-list").find(`[data-uuid='${user.uuid}']`).html(user.nick);
+	}
+	
+	function updateColor(data)
+	{
+		setToken(data);
+		//$(".my-color").css("background-color", data + "4f");
+	}
+	
+	function colorChange(data)
+	{
+		let user = JSON.parse(data);
+		
+		$("#user-list").find(`[data-uuid='${user.uuid}']`).css("color", user.color);
 	}
 	
 	function updateUserList(data)

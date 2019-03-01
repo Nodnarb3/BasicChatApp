@@ -10,6 +10,8 @@ const port = 8080;
 const serverUser = JSON.stringify(createUser("server", "!", "#ffffff"));
 const serverWarning = JSON.stringify(createUser("server", "!", "#ff0000"));
 
+const hexCharacters = '0123456789ABCDEF';
+
 let userCounter = 0;
 
 let users = [];
@@ -20,8 +22,8 @@ app.use(express.static('public'));
 server.listen(port, () => console.log(`Listening on port ${port}`));
 
 io.on('connection', function(socket){	
-	let user;
-	
+	let user; //For some reason this only saves if I JSON.stringify the user object so it requires parsing and re-stringing to use.
+
 	if(!!socket.handshake.headers.cookie)
 	{
 		let c = cookie.parse(socket.handshake.headers.cookie);
@@ -65,11 +67,15 @@ io.on('connection', function(socket){
 	
 	socket.on('message', function(msg){
 		
-		if(msg.startsWith("/nick "))
+		if(msg.startsWith("/nickcolor"))
+		{
+			console.log("Updating color for user: " + user);
+			user = updateColor(socket, msg, user);
+		}
+		else if(msg.startsWith("/nick"))
 		{
 			console.log("Updating username for user: " + user);
 			user = updateNickname(socket, msg, user);
-			console.log(user);
 		}
 		else
 		{
@@ -90,20 +96,56 @@ function updateNickname(socket, msg, user)
 		socket.emit("message", JSON.stringify(createMessage(serverWarning, 'Invalid number of arguments.')));
 		socket.emit("message", JSON.stringify(createMessage(serverWarning, 'The format expected is:')));
 		socket.emit("message", JSON.stringify(createMessage(serverWarning, '/nick &lt;new_nickname&gt;')));
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, 'example: /nick Brandon')));
 		
 		return user;
 	}
 	
-	let u = JSON.parse(user);
 	let newNick = commandTokens[1];
 	
-	u.nick = newNick;
-	
-	let newUser = JSON.stringify(u);
-	
-	users[users.indexOf(user)] = newUser;
+	if(users.some((element) => {return JSON.parse(element).nick === newNick || ["!"].includes(newNick);}))
+	{
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, 'Invalid nickname.')));
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, `The nickname: '${newNick}' is already in use or is a reserved nickname.`)));
 		
+		return user;
+	}
+	
+	
+	let u = JSON.parse(user);
+	let oldName = u.nick;
+	u.nick = newNick;
+	let newUser = JSON.stringify(u);
+	users[users.indexOf(user)] = newUser;	
 	socket.emit("update-nick", newUser);
+	io.emit("nickname-change", newUser);
+	io.emit("message", JSON.stringify(createMessage(serverUser, `${oldName} has changed their nickname to ${newNick}!`)));
+	
+	return newUser;
+}
+
+function updateColor(socket, msg, user)
+{
+	let commandTokens = msg.split(" ");
+	
+	if(commandTokens.length !== 2 || commandTokens[1].length < 6 || commandTokens[1].toUpperCase().split('').some((element)=>{return !hexCharacters.includes(element);}))
+	{
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, 'Invalid number or format of arguments.')));
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, 'The format expected is:')));
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, '/nickcolor &lt;RRGGBB&gt;')));
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, 'example: /nickcolor B1C6D3')));
+		
+		return user;
+	}
+	
+	let newColor = "#" + commandTokens[1];
+	
+	let u = JSON.parse(user);
+	u.color = newColor;
+	let newUser = JSON.stringify(u);
+	users[users.indexOf(user)] = newUser;
+	socket.emit("update-color", newUser);
+	io.emit("color-change", newUser);
 	
 	return newUser;
 }
@@ -111,7 +153,16 @@ function updateNickname(socket, msg, user)
 function genNickname()
 {
 	userCounter++;
-	return "Anon-" + userCounter; 
+	
+	let nick = "Anon-" + userCounter;
+	
+	while(users.some((el)=>{return JSON.parse(el).nick === nick}))
+	{
+		userCounter++;
+		nick = "Anon-" + userCounter;
+	}
+	
+	return nick; 
 }
 
 function createUser(uuid, nick, color)
@@ -134,12 +185,11 @@ function createMessage(user, message)
 
 function genColor()
 {
-  	let characters = "0123456789ABCDEF";
 	let color = "#";
 	
 	for(let i = 0; i < 6; i++)
 	{
-		color += characters[Math.floor(Math.random() * characters.length)]; 
+		color += hexCharacters[Math.floor(Math.random() * hexCharacters.length)]; 
 	}
 	
 	return color;

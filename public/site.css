@@ -63,7 +63,6 @@ body{
 .message-inner{
 	max-width: 90%;
 	width: auto;
-	min-width: 10%;
 	display: inline-block;
 	border: 1px solid black;
 	border-radius: 6px;
