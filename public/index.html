@@ -17,25 +17,21 @@
 <body>
 <div class="container-fluid h-100">
 	<div class="row top-area pt-2 pb-1">
-		<div class="col-9">
-			<h2>You are <span class="your-nick"></span></h2>
+		<div class="col-7 col-md-9">
+			<h2 class="no-wrap">You are <span class="your-nick"></span></h2>
 		</div>
-		<div class="col-3">
+		<div class="col-5 col-md-3">
 			<h2 class="no-wrap">Online Users:</h2>
 		</div>
 	</div>
 	<div class="row content-area">
-		<div class="col-9 chat-frame">
+		<div class="col-7 col-md-9 chat-frame">
 			<div class="chat-area">
-				<div class="scroller">
-					<div class="message">Message</div>
-					<div class="message">Message</div>
-					<div class="message">Message</div>
-					<div class="message">Message</div>
+				<div id="message-list" class="scroller">
 				</div>
 			</div>
 		</div>
-		<div class="col-3 user-frame">
+		<div class="col-5 col-md-3 user-frame">
 			<div class="user-area">
 				<div id="user-list" class="scroller">
 					
@@ -58,11 +54,15 @@
 	</div>
 </div>
 	
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script
+	  src="https://code.jquery.com/jquery-3.3.1.min.js"
+	  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	  crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+	<script src="/ejs.min.js"></script>
 	<script src="client.js"></script>
 </body>
 </html>
