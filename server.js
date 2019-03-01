@@ -111,6 +111,15 @@ function updateNickname(socket, msg, user)
 		return user;
 	}
 	
+	if(newNick.length > 26)
+	{
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, 'Invalid nickname.')));
+		socket.emit("message", JSON.stringify(createMessage(serverWarning, `The nickname you entered exceeds the 26 character length limit.`)));
+		
+		return user;
+	}
+	
+	
 	
 	let u = JSON.parse(user);
 	let oldName = u.nick;

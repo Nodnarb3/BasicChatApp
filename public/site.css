@@ -99,6 +99,15 @@ body{
 	word-break: break-all;
 }
 
+.timestamp{
+	font-weight: normal;
+	font-size: small;
+}
+
+.timestamp:before{
+	content: 'Sent at ';
+}
+
 .bold{
 	font-weight: bold;
 }

@@ -74,13 +74,17 @@
 	
 	function addChatMessage(auth, msg, timestamp)
 	{	
+		let d = new Date(timestamp);
+		let time = `${d.getHours()}:${d.getMinutes()}`;
+		
 		let html = ejs.render(		
 		`<div data-uuid="<%=auth.uuid%>" class="message-wrapper">
 			<div class="message-inner" style="background-color: <%=auth.color%>4F">
 				<div class="message-user"><%=auth.nick%>:</div>
 				<div class="message-body"><%-msg%></div>
+				<div class="timestamp"><%=time%></div>
 			</div>
-		</div>`,{auth: auth, msg: msg});
+		</div>`,{auth: auth, msg: msg, time:time});
 		
 		if(isMe(auth.uuid))
 		{
@@ -102,7 +106,6 @@
 	function updateColor(data)
 	{
 		setToken(data);
-		//$(".my-color").css("background-color", data + "4f");
 	}
 	
 	function colorChange(data)
